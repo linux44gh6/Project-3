@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useUpdateOrderMutation } from "@/Redux/Features/ProductMangement/UpdateOrder";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
+import { useRemoveOrderMutation } from "@/Redux/Features/ProductMangement/RemoveOrder";
 
 // Define the Order type
 interface Order {
@@ -29,9 +30,34 @@ interface Order {
 const AdminOrderPage: React.FC = () => {
   const { data, isLoading, refetch } = useGetAllOrderQuery(undefined);
   const [update] = useUpdateOrderMutation();
-
+  const [removeOrder]=useRemoveOrderMutation()
   console.log(data?.data);
-
+  const handleToRemove=(id:string)=>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "The Order will be Remove from Order",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Remove",
+    }).then(async (result) => {
+      const toastId=toast.success('')
+      if (result.isConfirmed) {
+        try {
+          await removeOrder(id)
+          toast.success("Order has been removed",{id:toastId});
+          refetch();
+        } catch (error) {
+          if (error instanceof Error) {
+            toast.error(`${error.message}`);
+          } else {
+            toast.error("An unknown error occurred");
+          }
+        }
+      }
+    });
+  }
   // Function to approve an order
   const handleToApprove = async (id: string) => {
     const updatedData = { status: "Shipped" };
@@ -94,6 +120,7 @@ const AdminOrderPage: React.FC = () => {
             <TableCell>{order.status}</TableCell>
             <TableCell className="text-right">${order.totalAmount.toFixed(2)}</TableCell>
             <TableCell className="text-right">
+              <Button onClick={()=>handleToRemove(order?._id)} className="me-4">Remove</Button>
               <Button
                 onClick={() => handleToApprove(order._id)}
                 disabled={order.status === "Shipped"}

@@ -17,12 +17,7 @@ const LoginForm = () => {
   const navigate=useNavigate()
     const dispatch = useDispatch()
     const [login]=useLoginMutation()
-     const form = useForm<{ email: string,password:string }>({
-            defaultValues: {
-              email: "john.doe@example.com",
-              password: "user1234",
-            },
-          });
+     const form = useForm<TLoginProps>();
           const onSubmit = async (data:TLoginProps) => {
             const loadingId=toast.loading("Loding in........")
                

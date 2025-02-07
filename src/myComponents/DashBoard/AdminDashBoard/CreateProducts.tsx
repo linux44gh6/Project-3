@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/form";
 import { useCreateProductMutation } from "@/Redux/Features/ProductMangement/CreateProduct";
 import { toast } from "sonner";
-import { z } from "zod";  // Import zod
-import { zodResolver } from '@hookform/resolvers/zod'; // Import resolver
+import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'; 
 
 interface ProductFormValues {
   title: string;
