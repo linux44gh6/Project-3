@@ -4,6 +4,7 @@ import { Rating } from 'react-simple-star-rating'
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
 const Details = () => {
 
     const dispatch = useDispatch()
@@ -24,7 +25,19 @@ const Details = () => {
     console.log(
         id
     );
-    const { data: product } = useGetSingleProductQuery(id);
+    const { data: product,isLoading } = useGetSingleProductQuery(id);
+    if (isLoading) {
+        return (
+            <div className="space-y-2">
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+            </div>
+        );
+    }
     return (
         <div className=' flex justify-center px-2'>
             <div className='w-1/2 border border-gray-400 p-2'>

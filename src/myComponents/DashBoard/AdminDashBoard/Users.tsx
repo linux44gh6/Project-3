@@ -10,14 +10,47 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
+import Swal from 'sweetalert2';
+import { toast } from 'sonner';
+import { useBlockUserMutation } from '@/Redux/Features/Auth/blockUserApi';
 interface TUser{
     name:string,
     email:string,
     role:string,
-    _id:string
+    _id:string,
+    isBlocked:boolean
 }
+
+
 const Users = () => {
-    const {data}=useGetAllUserQuery(undefined)
+    const {data,refetch}=useGetAllUserQuery(undefined)
+    const [blockUser]=useBlockUserMutation()
+    const handleToBlock = async (id: string) => {
+        const updatedData = {isBlocked:true};
+        Swal.fire({
+          title: "Are you sure?",
+          text: "The user will be Block.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#000",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Block",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              await blockUser({ data: updatedData, id }).unwrap();
+              toast.success("The user has been Blocked");
+              refetch();
+            } catch (error) {
+              if (error instanceof Error) {
+                toast.error(`${error.message}`);
+              } else {
+                toast.error("An unknown error occurred");
+              }
+            }
+          }
+        });
+      };
     return (
         <Table>
                    <TableCaption>A list of your recent invoices.</TableCaption>
@@ -39,7 +72,9 @@ const Users = () => {
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.role}</TableCell>
                             <TableCell className="text-right">
-                                <Button>Block</Button>
+                               {user?.isBlocked===false?
+                                <Button onClick={()=>handleToBlock(user?._id)}>Block</Button>:<Button disabled onClick={()=>handleToBlock(user?._id)}>Already Blocked</Button>
+                                }
                             </TableCell>
                         </TableRow>
                         ))

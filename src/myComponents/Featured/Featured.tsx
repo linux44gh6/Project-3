@@ -12,10 +12,11 @@ import { TProduct } from "@/Types/productsType";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/Store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Featured = () => {
   const navigate = useNavigate();
-  const { data: product } = useGetAllProductsQuery(undefined);
+  const { data: product,isLoading } = useGetAllProductsQuery(undefined);
   const searchQuery = useSelector((state: RootState) => state.search.query);
   const filteredProducts = product?.data
     ?.filter((p: { title: string; }) => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -28,7 +29,18 @@ const Featured = () => {
   const handelToAllProducts = () => {
     navigate("/allProducts");
   };
-
+  if (isLoading) {
+    return (
+        <div className="space-y-2">
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+            <Skeleton className="w-full h-[40px] rounded-lg" />
+        </div>
+    );
+}
   return (
     <div className="mt-10">
       <h2 className="text-4xl font-bold text-center mb-6">Featured Products</h2>

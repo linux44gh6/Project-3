@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGetAllProductsQuery } from '@/Redux/Features/ProductMangement/getAllProdcuts';
 import { RootState } from '@/Redux/Store';
 import { TProduct } from '@/Types/productsType';
@@ -8,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AllProducts = () => {
     const navigate = useNavigate();
-    const {data:product}=useGetAllProductsQuery(undefined)
+    const {data:product,isLoading}=useGetAllProductsQuery(undefined)
     const searchQuery=useSelector((state:RootState)=>state.search.query)
     const filteredProducts=product?.data?.filter((p:{title:string})=>p.title.toLowerCase().includes(searchQuery.toLowerCase()))
     const handleToShowDetails = (id:string) => {
@@ -16,6 +17,18 @@ const AllProducts = () => {
         console.log(id);
        navigate(`/details/${id}`);
     }
+    if (isLoading) {
+      return (
+          <div className="space-y-2">
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+              <Skeleton className="w-full h-[40px] rounded-lg" />
+          </div>
+      );
+  }
     return (
         <div>
                   <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-2">

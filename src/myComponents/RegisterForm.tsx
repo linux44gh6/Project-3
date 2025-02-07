@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAddUserMutation } from '@/Redux/Features/UserManageMent/userManagement';
 type TRegisterProps = {
     name: string;
@@ -12,12 +12,13 @@ type TRegisterProps = {
     password: string;
 }
 const RegisterForm = () => {
+  const navigate=useNavigate()
     const [register]=useAddUserMutation()
      const form = useForm<TRegisterProps>();
           const onSubmit = async (data:TRegisterProps) => {
            try{
-            const result=await register(data).unwrap()
-            console.log(result);
+           await register(data).unwrap()
+            navigate('/login')
             toast.success('Register Success')
           console.log(data);
            }catch(err){

@@ -25,16 +25,29 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
 import { useGetOrderByEmailQuery } from '@/Redux/Features/ProductMangement/getOrderByEmail';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const OrderPage = () => {
     const user = useSelector((state: RootState) => state.auth.user) as { userEmail: string } | null;
     const email = user?.userEmail;
-    const { data } = useGetOrderByEmailQuery(email);
+    const { data,isLoading } = useGetOrderByEmailQuery(email);
     // data?.data?.map((product) =>
     //     product?.products?.map((p)=>{
     //         console.log(p?.productId?.title);
     //     })
     // );
+    if (isLoading) {
+        return (
+            <div className="space-y-2">
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+                <Skeleton className="w-full h-[40px] rounded-lg" />
+            </div>
+        );
+    }
     return (
         <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
