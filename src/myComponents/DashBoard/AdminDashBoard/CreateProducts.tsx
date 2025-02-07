@@ -5,6 +5,10 @@ import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage 
 } from "@/components/ui/form";
 import { useCreateProductMutation } from "@/Redux/Features/ProductMangement/CreateProduct";
+import { toast } from "sonner";
+import { z } from "zod";  // Import zod
+import { zodResolver } from '@hookform/resolvers/zod'; // Import resolver
+
 interface ProductFormValues {
   title: string;
   description: string;
@@ -14,9 +18,21 @@ interface ProductFormValues {
   isPublished: boolean;
 }
 
+//  the form validation schema
+const schema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  image: z.string().url("Invalid URL format").min(1, "Image URL is required"),
+  price: z.number(),
+  rating: z.number(),
+  isPublished: z.boolean(),
+});
+
 const ProductForm: React.FC = () => {
   const [createProduct] = useCreateProductMutation();
+
   const form = useForm<ProductFormValues>({
+    resolver: zodResolver(schema),
     defaultValues: {
       title: "",
       description: "",
@@ -27,17 +43,19 @@ const ProductForm: React.FC = () => {
     },
   });
 
-  // ✅ Handle Form Submission
+  // Handle form submission
   const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
+    const toastId = toast.success("Product create success");
     try {
-      const result = await createProduct({
+      await createProduct({
         ...data,
         price: Number(data.price),
         rating: Number(data.rating),
       });
-
-      console.log("Product Created:", result);
+      toast.success("Product created successfully", { id: toastId });
+      form.reset()
     } catch (error) {
+      toast.error("Something went wrong");
       console.error("Error creating product:", error);
     }
   };
@@ -52,7 +70,6 @@ const ProductForm: React.FC = () => {
         <FormField
           control={form.control}
           name="title"
-          rules={{ required: "Title is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -68,7 +85,6 @@ const ProductForm: React.FC = () => {
         <FormField
           control={form.control}
           name="description"
-          rules={{ required: "Description is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
@@ -84,7 +100,6 @@ const ProductForm: React.FC = () => {
         <FormField
           control={form.control}
           name="image"
-          rules={{ required: "Image URL is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image URL</FormLabel>
@@ -100,11 +115,6 @@ const ProductForm: React.FC = () => {
         <FormField
           control={form.control}
           name="rating"
-          rules={{
-            required: "Rating is required",
-            min: { value: 0, message: "Minimum rating is 0" },
-            max: { value: 5, message: "Maximum rating is 5" },
-          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rating</FormLabel>
@@ -128,7 +138,6 @@ const ProductForm: React.FC = () => {
         <FormField
           control={form.control}
           name="price"
-          rules={{ required: "Price is required", min: { value: 0, message: "Price must be positive" } }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Price ($)</FormLabel>
