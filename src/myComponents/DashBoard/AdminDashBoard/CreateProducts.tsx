@@ -1,39 +1,45 @@
-import { useForm } from "react-hook-form";
-import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { 
+  Form, FormControl, FormField, FormItem, FormLabel, FormMessage 
+} from "@/components/ui/form";
 import { useCreateProductMutation } from "@/Redux/Features/ProductMangement/CreateProduct";
+interface ProductFormValues {
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+  rating: number;
+  isPublished: boolean;
+}
 
-const ProductForm = () => {
+const ProductForm: React.FC = () => {
   const [createProduct] = useCreateProductMutation();
-
-  // Initialize the form with react-hook-form's useForm hook
-  const form = useForm({
+  const form = useForm<ProductFormValues>({
     defaultValues: {
-      // title: 'Luxury Gel Pen',
-      // description: "Experience effortless writing with our Luxury Gel Pen, designed for professionals, students, and artists alike. Featuring a sleek, ergonomic design, this pen ensures a comfortable grip for long writing sessions. The smooth-flowing, quick-dry ink prevents smudging and bleeding, making it perfect for both everyday use and creative projects. Whether you taking notes, sketching, or signing documents, this high-quality gel pen delivers precision and style.",
-      // image: 'https://i.ibb.co/Q3KNQMZx/4548718152131-1260-700x.webp',
-      // price: 45,
-      // rating: 5,
+      title: "",
+      description: "",
+      image: "",
+      price: 0,
+      rating: 0,
       isPublished: true,
     },
   });
 
-  // Handle form submission
-  const onSubmit = async (data) => {
+  // ✅ Handle Form Submission
+  const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
+    try {
+      const result = await createProduct({
+        ...data,
+        price: Number(data.price),
+        rating: Number(data.rating),
+      });
 
-    // Make sure price and rating are numbers
-    // const submittedData = {
-    //   body: {
-    //   ...data
-    //   },
-    // };
-
-    // console.log("Submitted Data:", submittedData);
-
-    const result = await createProduct(data);
-    console.log("Result:", result);
+      console.log("Product Created:", result);
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
   };
 
   return (
@@ -46,6 +52,7 @@ const ProductForm = () => {
         <FormField
           control={form.control}
           name="title"
+          rules={{ required: "Title is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -61,6 +68,7 @@ const ProductForm = () => {
         <FormField
           control={form.control}
           name="description"
+          rules={{ required: "Description is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
@@ -76,6 +84,7 @@ const ProductForm = () => {
         <FormField
           control={form.control}
           name="image"
+          rules={{ required: "Image URL is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image URL</FormLabel>
@@ -91,16 +100,23 @@ const ProductForm = () => {
         <FormField
           control={form.control}
           name="rating"
+          rules={{
+            required: "Rating is required",
+            min: { value: 0, message: "Minimum rating is 0" },
+            max: { value: 5, message: "Maximum rating is 5" },
+          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rating</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  min="0"
-                  max="5"
-                  placeholder="Enter rating (0-5)"
-                  {...field}
+                <Input 
+                  type="number" 
+                  min="0" 
+                  max="5" 
+                  step="0.1" 
+                  placeholder="Enter rating (0-5)" 
+                  {...field} 
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -112,16 +128,18 @@ const ProductForm = () => {
         <FormField
           control={form.control}
           name="price"
+          rules={{ required: "Price is required", min: { value: 0, message: "Price must be positive" } }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Price ($)</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="Enter price"
-                  {...field}
+                <Input 
+                  type="number" 
+                  min="0" 
+                  step="0.01" 
+                  placeholder="Enter price" 
+                  {...field} 
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -137,7 +155,12 @@ const ProductForm = () => {
             <FormItem>
               <FormLabel>Publish</FormLabel>
               <FormControl>
-                <input type="checkbox" {...field} className="ml-2" />
+                <input 
+                  type="checkbox" 
+                  checked={field.value} 
+                  onChange={(e) => field.onChange(e.target.checked)} 
+                  className="ml-2"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

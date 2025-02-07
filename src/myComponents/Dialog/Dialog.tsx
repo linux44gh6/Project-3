@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
     Dialog,
     DialogContent,
@@ -10,8 +10,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { NavLink } from 'react-router-dom';
 import { Separator } from '@radix-ui/react-separator';
-  
-const CustomDialog = ({button}) => {
+interface CustomDialogProps {
+  button: React.ReactNode;
+}
+
+const CustomDialog: React.FC<CustomDialogProps> = ({ button }) => {
     return (
         <Dialog>
   <DialogTrigger>{button}</DialogTrigger>

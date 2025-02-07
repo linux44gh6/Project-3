@@ -1,12 +1,21 @@
-import React from 'react';
-import { User, Mail, Briefcase, Pencil } from "lucide-react";
+
+import { Mail, Briefcase, Pencil } from "lucide-react";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
+import { toast } from 'sonner';
 const AdminProfile = () => {
-    const user2=useSelector((state:RootState)=>state.auth.user)
-    const user = {
+    const user2 = useSelector((state: RootState) => state.auth.user) as { userEmail: string } | null;
+    if(!user2){
+      toast.error('user not Found')
+    }
+    const user = user2 ? {
         name: "Milon Hossain",
         email: user2.userEmail,
+        role: "Admin",
+        profilePic: "https://i.pravatar.cc/150?img=3",
+      } : {
+        name: "Milon Hossain",
+        email: "N/A",
         role: "Admin",
         profilePic: "https://i.pravatar.cc/150?img=3",
       };

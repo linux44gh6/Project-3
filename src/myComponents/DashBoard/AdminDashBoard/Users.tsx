@@ -1,5 +1,5 @@
 import { useGetAllUserQuery } from '@/Redux/Features/UserManageMent/getAllUser';
-import React from 'react';
+
 import {
     Table,
     TableBody,
@@ -10,6 +10,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
+interface TUser{
+    name:string,
+    email:string,
+    role:string,
+    _id:string
+}
 const Users = () => {
     const {data}=useGetAllUserQuery(undefined)
     return (
@@ -26,7 +32,7 @@ const Users = () => {
                    </TableHeader>
                    <TableBody>
                       {
-                        data?.data?.map((user,index)=>(
+                        data?.data?.map((user:TUser,index:number)=>(
                             <TableRow key={user?._id}>
                             <TableCell className="font-medium">{index+1}</TableCell>
                             <TableCell>{user.name}</TableCell>

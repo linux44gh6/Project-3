@@ -3,7 +3,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { useGetAllProductsQuery } from '@/Redux/Features/ProductMangement/getAllProdcuts';
 import { RootState } from '@/Redux/Store';
 import { TProduct } from '@/Types/productsType';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

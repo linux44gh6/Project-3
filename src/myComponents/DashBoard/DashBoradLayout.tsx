@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
 import UserDashBoard from './UserDashBoard';
@@ -13,8 +13,8 @@ const DashBoradLayout = () => {
     if(!user){
         navigate('/login')
     }
-    // const role = user?.userRole;
-    const role='admin'
+     const role = user?.userRole;
+
 
     return (
         <div>

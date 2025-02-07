@@ -1,7 +1,7 @@
 // UserDashboard.tsx
 import { Home, Inbox,User2Icon } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
-import React from "react";
+
 const items = [
   {
     title: "Home",

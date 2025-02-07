@@ -5,6 +5,7 @@ type TCartItem = {
   title: string;
   price: number;
   totalQuantity: number;
+  image:string
 };
 
 type CartState = {

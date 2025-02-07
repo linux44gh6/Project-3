@@ -1,5 +1,5 @@
 import { useGetAllProductsQuery } from "@/Redux/Features/ProductMangement/getAllProdcuts";
-import React from "react";
+
 import {
   Card,
   CardContent,

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import img from "@/assets/colorful-stationery_93675-28229.jpg"
 import { Button } from '@/components/ui/button';
 const Banner = () => {

@@ -1,4 +1,6 @@
 
+import  { JSX } from 'react';
+
 interface RouteItem {
     path?: string;
     element?: JSX.Element;

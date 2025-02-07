@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { clearCart } from '@/Redux/Features/ProductSlice/cartSlice';
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'sonner';

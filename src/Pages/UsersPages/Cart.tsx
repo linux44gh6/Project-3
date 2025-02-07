@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { RootState } from '@/Redux/Store';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { Button } from '@/components/ui/button';
@@ -9,10 +8,11 @@ import { toast } from 'sonner';
 import { usePaymentMutation } from '@/Redux/Features/Payment/Payment';
 import { loadStripe } from '@stripe/stripe-js';
 
-
 const Cart = () => {
   const [payment, { isLoading }] = usePaymentMutation();
   const [createOrder] = useCreateOrderMutation();
+  
+  
   const data = useSelector((state: RootState) => state.cart);
 
   const sumTotal = data.items

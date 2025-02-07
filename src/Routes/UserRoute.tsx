@@ -2,7 +2,6 @@
 import Details from "@/Pages/UsersPages/Details";
 import About from "../Pages/UsersPages/About";
 import Home from "../Pages/UsersPages/Home";
-import React from "react";
 import Cart from "@/Pages/UsersPages/Cart";
 import AllProducts from "@/Pages/UsersPages/AllProducts";
 import PrivetRoute from "./PrivetRoute";

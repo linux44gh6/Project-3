@@ -1,4 +1,18 @@
-import React from 'react';
+
+interface ProductItem {
+    productId: {
+        _id: string;
+        title: string;
+    };
+    _id: string;
+    quantity: number;
+}
+
+interface Product {
+    products: ProductItem[];
+    status: string;
+    totalAmount: number;
+}
 import {
     Table,
     TableBody,
@@ -13,7 +27,7 @@ import { RootState } from '@/Redux/Store';
 import { useGetOrderByEmailQuery } from '@/Redux/Features/ProductMangement/getOrderByEmail';
 
 const OrderPage = () => {
-    const user = useSelector((state: RootState) => state.auth.user);
+    const user = useSelector((state: RootState) => state.auth.user) as { userEmail: string } | null;
     const email = user?.userEmail;
     const { data } = useGetOrderByEmailQuery(email);
     // data?.data?.map((product) =>
@@ -34,8 +48,8 @@ const OrderPage = () => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data?.data?.map((product) =>
-                    product?.products?.map((p) => (
+                {data?.data?.map((product: Product) =>
+                    product?.products?.map((p: ProductItem) => (
                         <TableRow key={p.productId?._id || p._id}>
                             <TableCell className="font-medium">{p?.productId?.title}</TableCell>
                             <TableCell>{product.status}</TableCell>

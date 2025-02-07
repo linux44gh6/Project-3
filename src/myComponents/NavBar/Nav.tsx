@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { components } from "@/myComponents/NavComponents/Components";
 
-import React from "react";
+
 import { NavLink } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +27,7 @@ const Nav = () => {
 //  const search=useSelector((state:RootState)=>state.search)
  
   const cart=useSelector((state:RootState)=>state.cart)
-  const user=useSelector((state:RootState)=>state.auth)
+  const user=useSelector((state:RootState)=>state.auth.user)
   console.log(user);
   const totalQuantity=cart.totalQuantity
   // const {data:product}=useGetAllProductsQuery(undefined)

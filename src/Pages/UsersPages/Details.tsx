@@ -1,17 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { useGetSingleProductQuery } from '@/Redux/Features/ProductMangement/getSingleProduct';
-import React from 'react';
+import { Rating } from 'react-simple-star-rating'
 import { useParams } from 'react-router-dom';
-import Rating  from 'react-rating';
-import { FaStar } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 const Details = () => {
-    const toastId=toast.success('Product')
+
     const dispatch = useDispatch()
-    const handleToCart = (data) => {
-        dispatch({type:'cart/addItemToCart',payload:data})
-        toast.success('Product added to cart',{id:toastId})
+    interface ProductData {
+        id: string;
+        title: string;
+        description: string;
+        price: number;
+        rating: number;
+        image: string;
+    }
+    const handleToCart = (data: ProductData) => {
+        const toastId = toast.success('');
+        dispatch({ type: 'cart/addItemToCart', payload: data });
+        toast.success('Product added to cart', { id: toastId });
     }
     const { id } = useParams()
     console.log(
@@ -28,10 +35,9 @@ const Details = () => {
 
             <div className='w-1/2 border border-gray-400 flex flex-col px-9 py-2 '>
                 <h1 className='text-4xl font-bold mb-10'>{product?.data?.title}</h1>
-               <Rating className='text-4xl'
-                emptySymbol={<FaStar className="icon" />}
-                fullSymbol={<FaStar className="icon " />}
-               initialRating={product?.data?.rating} readonly/>
+               <div className='flex'>
+               <Rating SVGstyle={{display:'inline-block'}} readonly fillColor='#000' initialValue={product?.data?.rating}/>
+               </div>
                 <p className='font-bold text-3xl mt-10'>${product?.data?.price}</p>
                 <p>Shipping calculated at checkout.</p>
                 <hr  className='mb-10 text-gray-300 mt-10'/>

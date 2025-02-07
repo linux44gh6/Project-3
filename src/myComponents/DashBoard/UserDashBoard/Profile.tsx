@@ -1,12 +1,12 @@
-import React from 'react';
-import { User, Mail, Briefcase, Pencil } from "lucide-react";
+
+import {  Mail, Briefcase, Pencil } from "lucide-react";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/Store';
 const Profile = () => {
-    const user2=useSelector((state:RootState)=>state.auth.user)
+    const user2 = useSelector((state: RootState) => state.auth.user) as { userEmail: string } | null;
     const user = {
         name: "Milon Hossain",
-        email: user2.userEmail,
+        email: user2 ? user2.userEmail : "No email available",
         role: "User",
         profilePic: "https://i.pravatar.cc/150?img=3",
       };

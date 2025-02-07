@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { CiLogout } from "react-icons/ci";
 import {
     DropdownMenu,
@@ -8,7 +8,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-import { Pointer } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '@/Redux/Slice';
 import { toast } from 'sonner';
@@ -16,7 +15,11 @@ import { RootState } from '@/Redux/Store';
 import { NavLink } from 'react-router-dom';
 
   
-const DropDown = ({button}) => {
+interface DropDownProps {
+  button: React.ReactNode;
+}
+
+const DropDown: React.FC<DropDownProps> = ({ button }) => {
     const dispatch=useDispatch()
     const user=useSelector((state:RootState)=>state.auth.user)
     const handleToLogOut=()=>{
